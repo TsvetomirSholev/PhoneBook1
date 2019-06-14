@@ -1,4 +1,4 @@
-package phonebook;
+package phonebook.entities;
 
 import java.util.Objects;
 

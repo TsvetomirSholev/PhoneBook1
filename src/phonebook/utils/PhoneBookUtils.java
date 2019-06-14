@@ -1,4 +1,7 @@
-package phonebook;
+package phonebook.utils;
+
+import phonebook.entities.PhoneBook;
+import phonebook.entities.PhoneBookEntry;
 
 import java.io.File;
 import java.io.FileReader;
@@ -158,9 +161,7 @@ public class PhoneBookUtils {
     public void printTopFive(PhoneBook phoneBook) {
         TreeMap<Integer,PhoneBookEntry> sortedByCalls = new TreeMap<>();
 
-        phoneBook.getPhonebook().forEach((key, value) -> {
-            sortedByCalls.put(value.getOutGoingCallsCount(),value);
-        });
+        phoneBook.getPhonebook().forEach((key, value) -> sortedByCalls.put(value.getOutGoingCallsCount(),value));
 
         for (int i = 0; i <5 ; i++) {
 

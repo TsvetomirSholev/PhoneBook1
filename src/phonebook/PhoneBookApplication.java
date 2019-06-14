@@ -1,8 +1,11 @@
 package phonebook;
 
+import phonebook.utils.PhoneBookUtils;
+import phonebook.entities.PhoneBook;
+
 import java.io.File;
 
-public class Main {
+public class PhoneBookApplication {
     public static void main(String[] args) {
 
         //Phonebook creation
