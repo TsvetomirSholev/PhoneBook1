@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.TreeMap;
 
 public class PhoneBookUtils {
 
-    // +359878123456 - normalized form
-    //Reads from a text file a pair like (name, number)
-    // name is a random name, number is a phone number
-    //Ignore invalid pairs
+    /**
+     * +359878123456 - normalized form
+     * Reads from a text file a pair like (name, number)
+     * name is a random name, number is a phone number
+     * Ignore invalid pairs
+     **/
     public PhoneBook createPhoneBook(File file) {
         PhoneBook phoneBook = new PhoneBook();
         try (final LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(file))) {
@@ -31,7 +34,10 @@ public class PhoneBookUtils {
 
     }
 
-
+    /**
+     * Trims down every already validated number to its
+     * normal form "+3598********"
+     */
     private String makeNumberNormal(String number) {
         StringBuilder normalNumber = new StringBuilder();
         if (number.startsWith("00359")) {
@@ -43,15 +49,16 @@ public class PhoneBookUtils {
 
         } else {
             normalNumber.append(number);
-
         }
 
 
         return String.valueOf(normalNumber);
     }
 
-    //checks if the pair name - phone number is valid
-    //ignores invalid entries
+    /**
+     * checks if the pair name - phone number is valid
+     * ignores invalid entries
+     */
     private boolean isEntryValid(String entry) {
         String[] splitEntry = entry.split("[ ][,][ ]");
         boolean checkValidation;
@@ -70,7 +77,9 @@ public class PhoneBookUtils {
         return checkValidation;
     }
 
-    //Validates the number from a string
+    /**
+     * Validates the number from a string
+     */
     private boolean isNumberValid(String number) {
         boolean checkNumberValidity = false;
         if (number.startsWith("0")) {
@@ -91,7 +100,9 @@ public class PhoneBookUtils {
         return checkNumberValidity;
     }
 
-    //Validates the name of the entry from a string
+    /**
+     * Validates the name of the entry from a string
+     */
     private boolean isNameValid(String name) {
         boolean checkNameValidity;
 
@@ -100,21 +111,25 @@ public class PhoneBookUtils {
         return checkNameValidity;
     }
 
-    //deletes an entry from the phone book by the entry's name
+    /**
+     * deletes an entry from the phone book by the entry's name
+     */
     public void deleteByName(String name, PhoneBook phoneBook) {
         System.out.println("Deleting: " + "\n" + phoneBook.getPhonebook().get(name) + "\n");
         phoneBook.getPhonebook().remove(name);
 
     }
 
-    //adds a pair to a phonebook
+    /**
+     * adds a pair to a phonebook
+     */
     public void addPair(String name, String number, PhoneBook phonebook) {
 
         if (isNameValid(name) && isNumberValid(number)) {
 
             PhoneBookEntry newEntry = new PhoneBookEntry(name, makeNumberNormal(number));
             phonebook.getPhonebook().put(name, newEntry);
-            System.out.println("Adding: " + phonebook.getPhonebook().get(name) + "\n");
+            System.out.println("Adding: " + "\n" + phonebook.getPhonebook().get(name) + "\n");
         } else {
             System.out.println("Invalid Entry with Name: " + name + " and number: " + number);
 
@@ -123,13 +138,36 @@ public class PhoneBookUtils {
 
     }
 
-    //gets the number from the phonebook by name
+    /**
+     * gets the number from the phonebook by name
+     */
     public String getNumberByName(String name, PhoneBook phoneBook) {
         return phoneBook.getPhonebook().get(name).getPhoneNumber();
     }
 
-    //prints all entries sorted by name Automatically sorted by TreeMap already
+    /**
+     * prints all entries sorted by name Automatically sorted by TreeMap already
+     */
     public void printEntriesSortedByName(PhoneBook phoneBook) {
         phoneBook.getPhonebook().forEach((key, value) -> System.out.println("Name: " + key + "\nNumber: " + value.getPhoneNumber() + "\n"));
     }
+
+    /**
+     * Prints the top 5 outgoing call counts
+     */
+    public void printTopFive(PhoneBook phoneBook) {
+        TreeMap<Integer,PhoneBookEntry> sortedByCalls = new TreeMap<>();
+
+        phoneBook.getPhonebook().forEach((key, value) -> {
+            sortedByCalls.put(value.getOutGoingCallsCount(),value);
+        });
+
+        for (int i = 0; i <5 ; i++) {
+
+            System.out.println(sortedByCalls.pollLastEntry().getValue());
+        }
+
+
+    }
+
 }

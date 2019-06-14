@@ -40,7 +40,7 @@ public class PhoneBookEntry {
     public String toString() {
         return "PhoneBookEntry is: " + personName + '\n' +
                 "Phone number is: " + phoneNumber + '\n' +
-                "Has outgoing calls: " + outGoingCallsCount;
+                "Has outgoing calls: " + outGoingCallsCount + "\n";
     }
 
     @Override
